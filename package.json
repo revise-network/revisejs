@@ -1,0 +1,20 @@
+{
+  "name": "revisejs",
+  "version": "0.1.1",
+  "description": "ReviseJS is a dynamic NFT server",
+  "author": "Revise Network",
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "bin": {
+    "revisejs": "index.js"
+  },
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+  }
+}
+
