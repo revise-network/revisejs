@@ -16,33 +16,50 @@ if (args.length <= 2) {
 }
 const command = args[2];
 if (command === 'print-key') {
-  // check if .revisejs folder is created
-  // if not: create it in the users home directory
-  // check if key is created
-  // if not: print "no key found.. please make one"
   if (fs.existsSync(path.join(HOMEDIR, '.revise', 'key'))) {
-    const key = 'API KEY HERE...'
-    console.log(`==========COPY AND STORE THE API KEY===========`);
+    const key = fs.readFileSync(path.join(HOMEDIR, '.revise', 'key')).toString();
+    console.log('');
+    console.log('');
+    console.log(`========== COPY AND STORE THE API KEY ===========`);
     console.log(key);
-    console.log(`===============================================`);
+    console.log(`=================================================`);
+    console.log('');
+    console.log('');
     return
   }
+  console.log('');
+  console.log('');
   console.log(`No API key found. Please generate one first. Check docs at https://docs.revise.network`);
   console.log('');
   console.log('');
   return
 }
 if (command === 'generate-key') {
-  // check if .revisejs folder is created
-  // if not: create it in the users home directory
-  // check if key is created
-  // if not: create it
-  console.log(`New Key generated. Your API Key is `);
+  if (!fs.existsSync(path.join(HOMEDIR, '.revise'))) {
+    console.log('');
+    console.log(`======== Unable to generate key ========`);
+    console.log(`Unable to generate Key. Revise project is not initialised.`);
+    console.log(`Please run the following command to init the app first: npx revisejs start`);
+    console.log('');
+    console.log('');
+    return;
+  }
+  require('revisejs-server').generateToken()
+  .then(token => {
+    console.log('');
+    console.log('');
+    console.log('========== KEY GENRATED, SAVE THE API KEY ===========');
+    console.log(`${token}`);
+    console.log('=====================================================');
+    console.log('');
+    console.log('');
+    fs.writeFileSync(path.join(HOMEDIR, '.revise', 'key'), token)
+  })
   return
 }
 if (command === 'start') {
   if (!fs.existsSync(path.join(HOMEDIR, '.revise'))) {
-    console.log('Revise config folder not found');
+    console.log('Revise config folder created');
     fs.mkdirSync((path.join(HOMEDIR, '.revise')))
   } else {
     console.log('Revise config folder found');
@@ -76,20 +93,26 @@ if (command === 'start') {
     });
   }
 
-  if (! fs.existsSync(path.join(HOMEDIR, '.revise', 'key'))) {
-    const key = 'API KEY HERE...'
+  async function startService() {
+    if (! fs.existsSync(path.join(HOMEDIR, '.revise', 'key'))) {
+      const key = await require('revisejs-server').generateToken()
+      console.log();
+      console.log();
+      console.log(`========== COPY AND STORE THE API KEY ===========`);
+      console.log(key);
+      console.log(`=================================================`);
+      fs.writeFileSync(path.join(HOMEDIR, '.revise', 'key'), key)
+    }
+  
+    // starting the revisejs server
     console.log();
     console.log();
-    console.log(`==========COPY AND STORE THE API KEY===========`);
-    console.log(key);
-    console.log(`===============================================`);
-    fs.writeFileSync(path.join(HOMEDIR, '.revise', 'key'), key)
+    require('revisejs-server').startService();
   }
+  startService().then(e => {
 
-  // starting the revisejs server
-  console.log();
-  console.log();
-  require('revisejs-server');
+  })
+  
   return
 }
 console.log(`Invalid command`);
