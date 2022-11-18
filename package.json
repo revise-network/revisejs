@@ -1,6 +1,6 @@
 {
   "name": "revisejs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ReviseJS is a dynamic NFT server",
   "author": "Revise Network",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "revisejs": "index.js"
   },
   "dependencies": {
+    "fs-extra": "^10.1.0",
     "revisejs-server": "^0.1.3"
   }
 }
