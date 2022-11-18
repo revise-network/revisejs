@@ -48,7 +48,6 @@ if (command === 'generate-key') {
   config = JSON.parse(fs.readFileSync(path.join(HOMEDIR, '.revise', '.env')).toString())
   let env = process.env
   process.env = {...env, ...config}
-  console.log(require('revisejs-server'));
   require('revisejs-server').generateToken()
   .then(token => {
     console.log('');
