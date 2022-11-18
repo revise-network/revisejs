@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const os = require('os')
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
 
@@ -84,6 +85,7 @@ if (command === 'start') {
     console.log('Generating the SQLite DB file...');
     const d = JSON.parse(fs.readFileSync(path.join(HOMEDIR, '.revise', '.env')).toString())
     process.env = {...process.env, ...(d)}
+    fse.copySync('./prisma', path.join(HOMEDIR, '.revise', 'prisma'))
     exec(`npx prisma migrate deploy`, (error, stdout, stderr) => {
       // if (error) {
       //     console.log(`error: ${error.message}`);
@@ -94,6 +96,7 @@ if (command === 'start') {
       //     return;
       // }
       // console.log(`stdout: ${stdout}`);
+      fse.removeSync(path.join(HOMEDIR, '.revise', 'prisma'))
     });
   }
 
