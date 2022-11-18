@@ -12,9 +12,6 @@
     "revisejs": "index.js"
   },
   "dependencies": {
-    
-  },
-  "devDependencies": {
+    "revisejs-server": "^0.1.1"
   }
 }
-

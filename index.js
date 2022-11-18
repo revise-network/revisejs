@@ -10,6 +10,7 @@ if (os.platform() === 'win32') {
 
 }
 const args = process.argv;
+
 if (args.length <= 2) {
   console.log(`enter a valid command`);
   return
@@ -44,6 +45,10 @@ if (command === 'generate-key') {
     console.log('');
     return;
   }
+  config = JSON.parse(fs.readFileSync(path.join(HOMEDIR, '.revise', '.env')).toString())
+  let env = process.env
+  process.env = {...env, ...config}
+  console.log(require('revisejs-server'));
   require('revisejs-server').generateToken()
   .then(token => {
     console.log('');

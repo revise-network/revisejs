@@ -13,8 +13,6 @@ model Collection {
   collectionURI String
   infoId String @unique
   info CollectionInfo @relation(fields: [infoId], references: [id])
-  appAuthTokenId String
-  appAuthToken AppAuthToken @relation(fields: [appAuthTokenId], references: [id])
   nfts NFT[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -40,8 +38,6 @@ model NFT {
   revisions NFTRevision[]
   collectionId String?
   collection Collection? @relation(fields: [collectionId], references: [id])
-  appAuthTokenId String
-  appAuthToken AppAuthToken @relation(fields: [appAuthTokenId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -57,16 +53,6 @@ model NFTRevision {
   image String?
   description String?
   metaData String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model AppAuthToken {
-  id String @default(uuid()) @id
-  key String @unique
-  collections Collection[]
-  nfts NFT[]
-  status Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

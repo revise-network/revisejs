@@ -4,11 +4,9 @@ CREATE TABLE "Collection" (
     "collectionName" TEXT,
     "collectionURI" TEXT NOT NULL,
     "infoId" TEXT NOT NULL,
-    "appAuthTokenId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    CONSTRAINT "Collection_infoId_fkey" FOREIGN KEY ("infoId") REFERENCES "CollectionInfo" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Collection_appAuthTokenId_fkey" FOREIGN KEY ("appAuthTokenId") REFERENCES "AppAuthToken" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Collection_infoId_fkey" FOREIGN KEY ("infoId") REFERENCES "CollectionInfo" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -30,11 +28,9 @@ CREATE TABLE "NFT" (
     "description" TEXT,
     "metaData" TEXT,
     "collectionId" TEXT,
-    "appAuthTokenId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    CONSTRAINT "NFT_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT "NFT_appAuthTokenId_fkey" FOREIGN KEY ("appAuthTokenId") REFERENCES "AppAuthToken" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "NFT_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -51,17 +47,5 @@ CREATE TABLE "NFTRevision" (
     CONSTRAINT "NFTRevision_nftId_fkey" FOREIGN KEY ("nftId") REFERENCES "NFT" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
--- CreateTable
-CREATE TABLE "AppAuthToken" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "key" TEXT NOT NULL,
-    "status" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "Collection_infoId_key" ON "Collection"("infoId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "AppAuthToken_key_key" ON "AppAuthToken"("key");
